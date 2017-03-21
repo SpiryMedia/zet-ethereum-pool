@@ -10,9 +10,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/hexutil"
 
-	"github.com/sammy007/open-ethereum-pool/rpc"
-	"github.com/sammy007/open-ethereum-pool/storage"
-	"github.com/sammy007/open-ethereum-pool/util"
+	"github.com/zet-tech/open-ethereum-pool/rpc"
+	"github.com/zet-tech/open-ethereum-pool/storage"
+	"github.com/zet-tech/open-ethereum-pool/util"
 )
 
 const txCheckInterval = 5 * time.Second
@@ -121,7 +121,7 @@ func (u *PayoutsProcessor) process() {
 		amountInShannon := big.NewInt(amount)
 
 		ptresh, _ := u.backend.GetTreshold(login)
-		if(ptresh <= 10) {
+		if ptresh <= 10 {
 			ptresh = u.config.Threshold
 		}
 

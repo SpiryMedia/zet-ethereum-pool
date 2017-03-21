@@ -10,9 +10,9 @@ import (
 
 	"github.com/ethereum/go-ethereum/common/math"
 
-	"github.com/sammy007/open-ethereum-pool/rpc"
-	"github.com/sammy007/open-ethereum-pool/storage"
-	"github.com/sammy007/open-ethereum-pool/util"
+	"github.com/zet-tech/open-ethereum-pool/rpc"
+	"github.com/zet-tech/open-ethereum-pool/storage"
+	"github.com/zet-tech/open-ethereum-pool/util"
 )
 
 type UnlockerConfig struct {
@@ -40,7 +40,6 @@ const donationAccount = "0xb85150eb365e7df0941f0cf08235f987ba91506a"
 // Donate 10% from pool fees to etc developers
 const donationFee2 = 11.1
 const donationAccount2 = "0xe9a7e26bf5c05fe3bae272d4c940bd7158611ce9"
-
 
 type BlockUnlocker struct {
 	config   *UnlockerConfig
@@ -440,10 +439,10 @@ func (u *BlockUnlocker) unlockAndCreditMiners() {
 			entries = append(entries, fmt.Sprintf("\tREWARD %v: %v: %v Shannon", block.RoundKey(), login, reward))
 
 			per := new(big.Rat)
-                        if val, ok := percents[login]; ok {
-                                per = val
-                        }
-                        u.backend.WriteReward(login, reward, per, false, block)
+			if val, ok := percents[login]; ok {
+				per = val
+			}
+			u.backend.WriteReward(login, reward, per, false, block)
 		}
 		log.Println(strings.Join(entries, "\n"))
 	}
@@ -485,10 +484,9 @@ func (u *BlockUnlocker) calculateRewards(block *storage.BlockData) (*big.Rat, *b
 		rewards[login] += weiToShannonInt64(donation)
 	}
 	var donation2 = new(big.Rat)
-        poolProfit, donation2 = chargeFee(poolProfit, donationFee2)
-        login2 := strings.ToLower(donationAccount2)
-        rewards[login2] += weiToShannonInt64(donation2)
-
+	poolProfit, donation2 = chargeFee(poolProfit, donationFee2)
+	login2 := strings.ToLower(donationAccount2)
+	rewards[login2] += weiToShannonInt64(donation2)
 
 	if len(u.config.PoolFeeAddress) != 0 {
 		address := strings.ToLower(u.config.PoolFeeAddress)
@@ -498,7 +496,7 @@ func (u *BlockUnlocker) calculateRewards(block *storage.BlockData) (*big.Rat, *b
 	return revenue, minersProfit, poolProfit, rewards, percents, nil
 }
 
-func calculateRewardsForShares(shares map[string]int64, total int64, reward *big.Rat)(map[string]int64, map[string]*big.Rat) {
+func calculateRewardsForShares(shares map[string]int64, total int64, reward *big.Rat) (map[string]int64, map[string]*big.Rat) {
 	rewards := make(map[string]int64)
 	percents := make(map[string]*big.Rat)
 
